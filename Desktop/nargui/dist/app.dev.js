@@ -66,10 +66,12 @@ function updateRegistro() {
           _context3.next = 2;
           return regeneratorRuntime.awrap(prisma.producto.update({
             where: {
-              id_producto: 10
+              id_producto: 10 // aca iria una variable
+
             },
             data: {
-              descripcion: "Carbones de coco - 250g"
+              descripcion: "Carbones de coco - 250g" //aca iria lo que se quiere remplazar
+
             }
           }));
 
@@ -81,9 +83,9 @@ function updateRegistro() {
   });
 }
 
-function consulta() {
-  var productos, producto;
-  return regeneratorRuntime.async(function consulta$(_context4) {
+function consultaLista() {
+  var productos, productosFiltrados;
+  return regeneratorRuntime.async(function consultaLista$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
@@ -92,34 +94,54 @@ function consulta() {
 
         case 2:
           productos = _context4.sent;
+          // aca utilizo forEach para recorrer elemento x elemento
           productos.forEach(function (producto) {
             if (producto.marca === "Adalya") {
+              // se puede utilizar una variable para poder filtrar
               console.log(producto);
             }
-          }); //Consulta con filtro (un solo registro)
+          });
+          /*  se puede simplificar de la siguiente manera, pero no retorna toda la lista de productos 
+              sino una lista filtrada*/
 
           _context4.next = 6;
+          return regeneratorRuntime.awrap(prisma.producto.findMany({
+            where: {
+              marca: "Adalya"
+            }
+          }));
+
+        case 6:
+          productosFiltrados = _context4.sent;
+          console.log(productosFiltrados);
+
+        case 8:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
+}
+
+function consultaProducto() {
+  var producto;
+  return regeneratorRuntime.async(function consultaProducto$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
           return regeneratorRuntime.awrap(prisma.producto.findFirst({
             where: {
               id_producto: 14
             }
           }));
 
-        case 6:
-          producto = _context4.sent;
+        case 2:
+          producto = _context5.sent;
 
-          if (producto.stock >= 100) {
-            //esto seria stock pedido >= (stock-stock pedido) y luego lllamo a funcion reducir stock
-            console.log("Se puede comprar");
-          } else {
-            console.log("No se puede comprar");
-          }
-
-          console.log(producto);
-
-        case 9:
+        case 3:
         case "end":
-          return _context4.stop();
+          return _context5.stop();
       }
     }
   });

@@ -38,34 +38,42 @@ async function updateRegistro(){
     //Modificacion de registros (con un identificador o campo unico)
     await prisma.producto.update({
         where:{
-            id_producto:10
+            id_producto:10 // aca iria una variable
         },
         data: {
-            descripcion: "Carbones de coco - 250g"
+            descripcion: "Carbones de coco - 250g" //aca iria lo que se quiere remplazar
         }
     })
 }
 
-async function consulta(){
-    // Consultas con filtro (varios registros)
+async function consultaLista(){
+    //Aca se consulta todos los productos y te devuelve un array de objetos
     const productos = await prisma.producto.findMany(); 
+
+    // aca utilizo forEach para recorrer elemento x elemento
     productos.forEach(producto =>{
-       if( producto.marca==="Adalya"){
+       if( producto.marca==="Adalya"){ // se puede utilizar una variable para poder filtrar
         console.log(producto)
        }
     })
-    //Consulta con filtro (un solo registro)
+
+    /*  se puede simplificar de la siguiente manera, pero no retorna toda la lista de productos 
+        sino una lista filtrada*/
+    const productosFiltrados = await prisma.producto.findMany({
+        where:{
+            marca: "Adalya"
+        }
+    })
+    console.log(productosFiltrados); 
+}
+
+async function consultaProducto(){
+    //Aca solamente consulto x solo un elemento (el primero que encuentre) que cumpla la condicion 
    const producto = await prisma.producto.findFirst({
     where:{
         id_producto:14
     }
    });
-   
-   if(producto.stock >=100){ //esto seria stock pedido >= (stock-stock pedido) y luego lllamo a funcion reducir stock
-    console.log("Se puede comprar")
-   }else{
-    console.log("No se puede comprar")
-   }
-   console.log(producto)
 }
+
 main()
